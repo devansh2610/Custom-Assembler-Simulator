@@ -52,8 +52,8 @@ def ld(arr, variables, count):
         if arr[1] in register:
             out = out + register.get(arr[1])
             if variables.get(arr[2]):
-                mem = variables.get(arr[2])
-                out = out + (mem).zfill(8)
+                extend = variables.get(arr[2])
+                out = out + (extend).zfill(8)
                 n_str = out[0:9] + out[10:]
                 return n_str
             else:
@@ -231,8 +231,8 @@ def st(arr, variables, register, count):
         if arr[1] in register:
             out += register.get(arr[1])
             if variables.get(arr[2]):
-                mem = variables.get(arr[2])
-                out += mem.zfill(8)
+                extend = variables.get(arr[2])
+                out += extend.zfill(8)
                 n_str = out[0:9] + out[10:]
                 return n_str
             else:
@@ -240,7 +240,7 @@ def st(arr, variables, register, count):
 
         elif arr[1] == "FLAGS":
             raise SyntaxError(
-                f"ERROR: Trying to save flag register to memory: at line {count}"
+                f"ERROR: Trying to save flag register to extendory: at line {count}"
             )
 
         else:
@@ -425,8 +425,8 @@ for line in myfile:
                 if len(arr) == 2:
                     out += "000"
                     if labels.get(arr[1]) is not None:
-                        mem = labels.get(arr[1])
-                        out += mem.zfill(8)
+                        extend = labels.get(arr[1])
+                        out += extend.zfill(8)
                         output.append(out)
                     else:
                         raise SyntaxError(f"ERROR: Label not found: line {count}")
@@ -438,8 +438,8 @@ for line in myfile:
                 out = "01111000"
                 if len(arr) == 2:
                     if labels.get(arr[1]) is not None:
-                        mem = labels.get(arr[1])
-                        out += mem.zfill(8)
+                        extend = labels.get(arr[1])
+                        out += extend.zfill(8)
                         output.append(out)
                     else:
                         raise SyntaxError(f"ERROR: Label not found: line {count}")
@@ -451,8 +451,8 @@ for line in myfile:
                 out = "11100000"
                 if len(arr) == 2:
                     if labels.get(arr[1]) is not None:
-                        mem = labels.get(arr[1])
-                        out += mem.zfill(8)
+                        extend = labels.get(arr[1])
+                        out += extend.zfill(8)
                     else:
                         raise SyntaxError(f"ERROR: Label not found: line {count}")
                 else:
@@ -464,8 +464,8 @@ for line in myfile:
                 out = "11111000"
                 if len(arr) == 2:
                     if labels.get(arr[1]) is not None:
-                        mem = labels.get(arr[1])
-                        out += mem.zfill(8)
+                        extend = labels.get(arr[1])
+                        out += extend.zfill(8)
                         output.append(out)
                     else:
                         raise SyntaxError(f"ERROR: Label not found: line {count}")

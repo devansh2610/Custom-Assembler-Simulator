@@ -1,8 +1,11 @@
 # CO-Project-CSE112
 CSE-112 Group Project
-This assembler code is written in python and it bridges the gap between high-level programming languages and the machine code understood by computers. They provide a means for programmers to write code at a lower level of abstraction, allowing them to optimize performance and have more control over the hardware. Assemblers are responsible for translating human-readable assembly language code into machine-readable instructions. Assembly language provides a more convenient and readable way for programmers to write code compared to writing directly in machine code.
-It takes input from terminal. We type the code in low level language in the terminal followed by enter and control+z to give input.
-The code starts by importing the sys module and reading the input from stdin using sys.stdin.read(). The input is then split into lines using the splitlines() method and stored in the infile variable.
+Aditya Singh Yadav (2022039)
+Devansh Grover (2022151)
+Garvit Kochar (2022185)
+Himeksh Malhotra (2022218)
+
+It takes input from terminal. We type the code in low level language in the terminal followed by enter and control+z to give input. The code starts by importing the sys module and reading the input from stdin using sys.stdin.read(). The input is then split into lines using the splitlines() method and stored in the infile variable.
 
 The code defines several helper functions, each representing an assembly instruction, such as mul, add, ld, AND, div, Compare, Invert, mov, XOR, OR, sub, st, Rshift, and Lshift. These functions handle different instructions and perform error checking on the input arguments. If any errors are encountered, they raise a SyntaxError with an appropriate error message.
 

@@ -1,20 +1,10 @@
 import sys
-infile = sys.stdin.read().splitlines()
+myfile = sys.stdin.read().splitlines()
 count = 0
 output = []
 labels = {}
 variables = {}
-register = {
-    "R0": "000",
-    "R1": "001",
-    "R2": "010",
-    "R3": "011",
-    "R4": "100",
-    "R5": "101",
-    "R6": "110",
-    "FLAGS": "111",
-}
-
+register = {"R0": "000", "R1": "001", "R2": "010", "R3": "011", "R4": "100", "R5": "101", "R6": "110", "FLAGS": "111"}
 
 def mul(arr, register, count):
     if "FLAGS" in arr:
@@ -23,20 +13,19 @@ def mul(arr, register, count):
         raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
     else:
         c = 0
-        bin_string = "0011000"
+        opcode = "0011000"
         for j in range(1, 4):
             for i in register:
                 if i == arr[j]:
-                    bin_string = bin_string + register[i]
+                    opcode = opcode + register[i]
                     c = 0
                     break
                 else:
                     c = 1
             if c == 1:
                 raise SyntaxError(f"ERROR: Invalid Register:   line {count}")
-        return bin_string
-
-
+        return opcode
+    
 def add(arr, register, count):
     if "FLAGS" in arr:
         raise SyntaxError(f"ERROR: Flags used as operands: line {count}")
@@ -44,20 +33,19 @@ def add(arr, register, count):
         raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
     else:
         c = 0
-        bin_string = "0000000"
+        opcode = "0000000"
         for j in range(1, 4):
             for i in register:
                 if i == arr[j]:
-                    bin_string = bin_string + register[i]
+                    opcode = opcode + register[i]
                     c = 0
                     break
                 else:
                     c = 1
             if c == 1:
                 raise SyntaxError(f"ERROR: Invalid Register: line {count}")
-        return bin_string
-
-
+        return opcode
+    
 def ld(arr, variables, count):
     out = "001000"
     if len(arr) == 3:
@@ -76,8 +64,7 @@ def ld(arr, variables, count):
             raise SyntaxError(f"ERROR: Register not found: line {count}")
     else:
         raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
-
-
+        
 def AND(arr, register, count):
     if "FLAGS" in arr:
         raise SyntaxError(f"ERROR: Flags used as operand:  line {count}")
@@ -85,18 +72,18 @@ def AND(arr, register, count):
         raise SyntaxError(f"ERROR: Incorrect number of operands: line {count}")
     else:
         c = 0
-        bin_string = "0110000"
+        opcode = "0110000"
         for j in range(1, 4):
             for i in register:
                 if i == arr[j]:
-                    bin_string += register[i]
+                    opcode += register[i]
                     c = 0
                     break
                 else:
                     c = 1
             if c == 1:
                 raise SyntaxError(f"ERROR: Invalid Register:  line {count}")
-        return bin_string
+        return opcode
 
 
 def div(arr, register, count):
@@ -106,19 +93,18 @@ def div(arr, register, count):
         raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
     else:
         c = 0
-        bin_string = "0011100000"
+        opcode = "0011100000"
         for j in range(1, 3):
             for i in register:
                 if i == arr[j]:
-                    bin_string = bin_string + register[i]
+                    opcode = opcode + register[i]
                     c = 0
                     break
                 else:
                     c = 1
             if c == 1:
                 raise SyntaxError(f"ERROR: Invalid Register:   line {count}")
-        return bin_string
-
+        return opcode
 
 def Compare(arr, register, count):
     if "FLAGS" in arr:
@@ -127,19 +113,18 @@ def Compare(arr, register, count):
         raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
     else:
         c = 0
-        bin_string = "0111000000"
+        opcode = "0111000000"
         for j in range(1, 3):
             for i in register:
                 if i == arr[j]:
-                    bin_string = bin_string + register[i]
+                    opcode = opcode + register[i]
                     c = 0
                     break
                 else:
                     c = 1
             if c == 1:
                 raise SyntaxError(f"ERROR: Invalid Register:   line {count}")
-        return bin_string
-
+        return opcode
 
 def Invert(arr, register, count):
     if "FLAGS" in arr:
@@ -148,39 +133,37 @@ def Invert(arr, register, count):
         raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
     else:
         c = 0
-        bin_string = "0110100000"
+        opcode = "0110100000"
         for j in range(1, 3):
             for i in register:
                 if i == arr[j]:
-                    bin_string = bin_string + register[i]
+                    opcode = opcode + register[i]
                     c = 0
                     break
                 else:
                     c = 1
             if c == 1:
                 raise SyntaxError(f"ERROR: Invalid Register: line {count}")
-        return bin_string
-
+        return opcode
 
 def mov(arr, register, count):
     if len(arr) != 3:
         raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
     if arr[2][0] == "$":
-        bin_string = "000100"
+        opcode = "000100"
         if arr[1] not in register:
             raise SyntaxError(f"ERROR: Invalid register: line {count}")
-        bin_string = bin_string + register[arr[1]]
-        bin_string = bin_string + bin(int(arr[2][1:]))[1:]
-        return bin_string
+        opcode = opcode + register[arr[1]]
+        opcode = opcode + bin(int(arr[2][1:]))[1:]
+        return opcode
     else:
-        bin_string = "0001100000"
+        opcode = "0001100000"
         if arr[1] not in register and arr[2] not in register:
             raise SyntaxError(f"ERROR: Invalid register: line {count}")
         elif arr[1] == "FLAGS" and arr[2] == "FLAGS":
             raise SyntaxError(f"ERROR: Improper use of flag: line {count}")
-        bin_string = bin_string + register[arr[1]] + register[arr[2]]
-        return bin_string
-
+        opcode = opcode + register[arr[1]] + register[arr[2]]
+        return opcode
 
 def XOR(arr, register, count):
     if "FLAGS" in arr:
@@ -189,19 +172,18 @@ def XOR(arr, register, count):
         raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
     else:
         c = 0
-        bin_string = "0101000"
+        opcode = "0101000"
         for j in range(1, 4):
             for i in register:
                 if i == arr[j]:
-                    bin_string = bin_string + register[i]
+                    opcode = opcode + register[i]
                     c = 0
                     break
                 else:
                     c = 1
             if c == 1:
                 raise SyntaxError(f"ERROR: Invalid Register:  line {count}")
-        return bin_string
-
+        return opcode
 
 def OR(arr, register, count):
     if "FLAGS" in arr:
@@ -210,19 +192,18 @@ def OR(arr, register, count):
         raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
     else:
         c = 0
-        bin_string = "0101100"
+        opcode = "0101100"
         for j in range(1, 4):
             for i in register:
                 if i == arr[j]:
-                    bin_string = bin_string + register[i]
+                    opcode = opcode + register[i]
                     c = 0
                     break
                 else:
                     c = 1
             if c == 1:
                 raise SyntaxError(f"ERROR: Invalid Register:  line {count}")
-        return bin_string
-
+        return opcode
 
 def sub(arr, register, count):
     if "FLAGS" in arr:
@@ -231,19 +212,18 @@ def sub(arr, register, count):
         raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
     else:
         c = 0
-        bin_string = "0000100"
+        opcode = "0000100"
         for j in range(1, 4):
             for i in register:
                 if i == arr[j]:
-                    bin_string = bin_string + register[i]
+                    opcode = opcode + register[i]
                     c = 0
                     break
                 else:
                     c = 1
             if c == 1:
                 raise SyntaxError(f"ERROR: Invalid Register:  line {count}")
-        return bin_string
-
+        return opcode
 
 def st(arr, variables, register, count):
     out = "001010"
@@ -268,7 +248,6 @@ def st(arr, variables, register, count):
 
     else:
         raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
-
 
 def Rshift(arr, register, count):
     out = "01000"
@@ -298,7 +277,6 @@ def Rshift(arr, register, count):
     else:
         raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
 
-
 def Lshift(arr, register, count):
     out = "01001V"
     if "FLAGS" in arr:
@@ -327,7 +305,6 @@ def Lshift(arr, register, count):
     else:
         raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
 
-
 def bin(dec):
     s = ""
     while dec != 0:
@@ -337,10 +314,9 @@ def bin(dec):
     s = "0" * (8 - len(s)) + s
     return s
 
-
 halt_count = 0
 var_count = 0
-for line in infile:
+for line in myfile:
     var_list = line.strip().split()
     if ":" in var_list[0]:
         var_list[0] = var_list[0][:-1]
@@ -367,17 +343,15 @@ for line in infile:
             if line.split(":")[1].strip() == "":
                 raise SyntaxError(f"No argument passed after the label: line {count}")
             if line.split(":")[0].strip() in labels:
-                raise SyntaxError(
-                    f"Invalid definition of label {line.split(':')[0].strip()}: line {count}"
-                )
+                raise SyntaxError(f"Invalid definition of label {line.split(':')[0].strip()}: line {count}")
             labels[line.split(":")[0].strip()] = bin(count - var_count - 1)
 if halt_count == 0:
     raise SyntaxError("No halt defined")
-if halt_count > 1 or infile[-1].split(":")[-1].strip() != "hlt":
+if halt_count > 1 or myfile[-1].split(":")[-1].strip() != "hlt":
     raise SyntaxError(f"Invalid definition of halt: line {count}")
 
 count = 0
-for line in infile:
+for line in myfile:
     var_list = line.strip().split()
     if line == "":
         continue
@@ -388,7 +362,7 @@ for line in infile:
                 raise SyntaxError(
                     f"Invalid definition of variable {var_list[0]}: line {count}"
                 )
-            variables[var_list[1]] = bin(len(infile) - var_count + count - 1)
+            variables[var_list[1]] = bin(len(myfile) - var_count + count - 1)
         else:
             if ":" in line and len(line.split(":")) > 2:
                 raise SyntaxError(f"2 labels found: at line {count}")

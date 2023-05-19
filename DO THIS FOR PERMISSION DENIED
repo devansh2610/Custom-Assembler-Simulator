@@ -1,0 +1,5 @@
+do this to avoid ./run permission denied
+
+open the Simple-Assembler folder in terminal and run chmod +x run 
+then open the automatedTesting folder in terminal and run chmod +x run
+then run the command ./run --no-sim

@@ -167,142 +167,6 @@ def Compare(arr, register, count):
             if c == 1:
                 raise SyntaxError(f"ERROR: Invalid Register:   line {count}")
         return opcode
-
-def Invert(arr, register, count):
-    if "FLAGS" in arr:
-        raise SyntaxError(f"ERROR: Flags used as operands: line {count}")
-    if len(arr) != 3:
-        raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
-    else:
-        c = 0
-        opcode = "0110100000"
-        for j in range(1, 3):
-            for i in register:
-                if i == arr[j]:
-                    opcode = opcode + register[i]
-                    c = 0
-                    break
-                else:
-                    c = 1
-            if c == 1:
-                raise SyntaxError(f"ERROR: Invalid Register: line {count}")
-        return opcode
-        
-def AND(arr, register, count):
-    if "FLAGS" in arr:
-        raise SyntaxError(f"ERROR: Flags used as operand:  line {count}")
-    if len(arr) != 4:
-        raise SyntaxError(f"ERROR: Incorrect number of operands: line {count}")
-    else:
-        c = 0
-        opcode = "0110000"
-        for j in range(1, 4):
-            for i in register:
-                if i == arr[j]:
-                    opcode += register[i]
-                    c = 0
-                    break
-                else:
-                    c = 1
-            if c == 1:
-                raise SyntaxError(f"ERROR: Invalid Register:  line {count}")
-        return opcode
-        
-def XOR(arr, register, count):
-    if "FLAGS" in arr:
-        raise SyntaxError(f"ERROR: Flags used as operand:  line {count}")
-    if len(arr) != 4:
-        raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
-    else:
-        c = 0
-        opcode = "0101000"
-        for j in range(1, 4):
-            for i in register:
-                if i == arr[j]:
-                    opcode = opcode + register[i]
-                    c = 0
-                    break
-                else:
-                    c = 1
-            if c == 1:
-                raise SyntaxError(f"ERROR: Invalid Register:  line {count}")
-        return opcode
-
-def OR(arr, register, count):
-    if "FLAGS" in arr:
-        raise SyntaxError(f"ERROR: Flags used as operand:  line {count}")
-    if len(arr) != 4:
-        raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
-    else:
-        c = 0
-        opcode = "0101100"
-        for j in range(1, 4):
-            for i in register:
-                if i == arr[j]:
-                    opcode = opcode + register[i]
-                    c = 0
-                    break
-                else:
-                    c = 1
-            if c == 1:
-                raise SyntaxError(f"ERROR: Invalid Register:  line {count}")
-        return opcode
-        
-def Rshift(arr, register, count):
-    out = "01000"
-    if "FLAGS" in arr:
-        raise SyntaxError(f"ERROR: Flags used as operand:  line {count}")
-    if len(arr) == 3:
-        if arr[1] == "FLAGS":
-            raise SyntaxError(f"ERROR: Improper use of flag:  line {count}")
-        if arr[1] in register:
-            out += register.get(arr[1])
-        else:
-            raise SyntaxError(f"ERROR: Invalid Register:  line {count}")
-        imm = arr[2]
-        if imm[0] == "$":
-            imm = int(imm[1 : len(imm)])
-            if imm in range(256):
-                imm_bin = str(bin(imm))
-                imm_bin = imm_bin[2 : len(imm_bin)]
-                if len(imm_bin) < 8:
-                    imm_bin = (8 - len(imm_bin)) * "0" + imm_bin
-                out += imm_bin
-            else:
-                raise SyntaxError(f"ERROR: Immediate out of bound: line {count}")
-        else:
-            raise SyntaxError(f"ERROR: Invalid Immediate Input: line {count}")
-        return out
-    else:
-        raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
-
-def Lshift(arr, register, count):
-    out = "01001V"
-    if "FLAGS" in arr:
-        raise SyntaxError(f"ERROR: Flags used as operand: line {count}")
-    if len(arr) == 3:
-        if arr[1] == "FLAGS":
-            raise SyntaxError(f"ERROR: Improper use of flag: line {count}")
-        if arr[1] in register:
-            out += register.get(arr[1])
-        else:
-            raise SyntaxError(f"ERROR: Invalid register: line {count}")
-        imm = arr[2]
-        if imm[0] == "$":
-            imm = int(imm[1 : len(imm)])
-            if imm in range(256):
-                imm_bin = str(bin(imm))
-                imm_bin = imm_bin[2 : len(imm_bin)]
-                if len(imm_bin) < 8:
-                    imm_bin = (8 - len(imm_bin)) * "0" + imm_bin
-                out += imm_bin
-            else:
-                raise SyntaxError(f"ERROR: Immediate out of bound: line {count}")
-        else:
-            raise SyntaxError(f"ERROR: Invalid Immediate Input: line {count}")
-        return out
-    else:
-        raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
      
 def bin(dec):
     s = ""
@@ -476,4 +340,140 @@ for line in myfile:
 machine_code = output
 for ip in machine_code:
     sys.stdout.write(ip + "\n")
+    
+'''def Invert(arr, register, count):
+    if "FLAGS" in arr:
+        raise SyntaxError(f"ERROR: Flags used as operands: line {count}")
+    if len(arr) != 3:
+        raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
+    else:
+        c = 0
+        opcode = "0110100000"
+        for j in range(1, 3):
+            for i in register:
+                if i == arr[j]:
+                    opcode = opcode + register[i]
+                    c = 0
+                    break
+                else:
+                    c = 1
+            if c == 1:
+                raise SyntaxError(f"ERROR: Invalid Register: line {count}")
+        return opcode
+        
+def AND(arr, register, count):
+    if "FLAGS" in arr:
+        raise SyntaxError(f"ERROR: Flags used as operand:  line {count}")
+    if len(arr) != 4:
+        raise SyntaxError(f"ERROR: Incorrect number of operands: line {count}")
+    else:
+        c = 0
+        opcode = "0110000"
+        for j in range(1, 4):
+            for i in register:
+                if i == arr[j]:
+                    opcode += register[i]
+                    c = 0
+                    break
+                else:
+                    c = 1
+            if c == 1:
+                raise SyntaxError(f"ERROR: Invalid Register:  line {count}")
+        return opcode
+        
+def XOR(arr, register, count):
+    if "FLAGS" in arr:
+        raise SyntaxError(f"ERROR: Flags used as operand:  line {count}")
+    if len(arr) != 4:
+        raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
+    else:
+        c = 0
+        opcode = "0101000"
+        for j in range(1, 4):
+            for i in register:
+                if i == arr[j]:
+                    opcode = opcode + register[i]
+                    c = 0
+                    break
+                else:
+                    c = 1
+            if c == 1:
+                raise SyntaxError(f"ERROR: Invalid Register:  line {count}")
+        return opcode
 
+def OR(arr, register, count):
+    if "FLAGS" in arr:
+        raise SyntaxError(f"ERROR: Flags used as operand:  line {count}")
+    if len(arr) != 4:
+        raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
+    else:
+        c = 0
+        opcode = "0101100"
+        for j in range(1, 4):
+            for i in register:
+                if i == arr[j]:
+                    opcode = opcode + register[i]
+
+                    c = 0
+                    break
+                else:
+                    c = 1
+            if c == 1:
+                raise SyntaxError(f"ERROR: Invalid Register:  line {count}")
+        return opcode
+        
+def Rshift(arr, register, count):
+    out = "01000"
+    if "FLAGS" in arr:
+        raise SyntaxError(f"ERROR: Flags used as operand:  line {count}")
+    if len(arr) == 3:
+        if arr[1] == "FLAGS":
+            raise SyntaxError(f"ERROR: Improper use of flag:  line {count}")
+        if arr[1] in register:
+            out += register.get(arr[1])
+        else:
+            raise SyntaxError(f"ERROR: Invalid Register:  line {count}")
+        imm = arr[2]
+        if imm[0] == "$":
+            imm = int(imm[1 : len(imm)])
+            if imm in range(256):
+                imm_bin = str(bin(imm))
+                imm_bin = imm_bin[2 : len(imm_bin)]
+                if len(imm_bin) < 8:
+                    imm_bin = (8 - len(imm_bin)) * "0" + imm_bin
+                out += imm_bin
+            else:
+                raise SyntaxError(f"ERROR: Immediate out of bound: line {count}")
+        else:
+            raise SyntaxError(f"ERROR: Invalid Immediate Input: line {count}")
+        return out
+    else:
+        raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")
+
+def Lshift(arr, register, count):
+    out = "01001V"
+    if "FLAGS" in arr:
+        raise SyntaxError(f"ERROR: Flags used as operand: line {count}")
+    if len(arr) == 3:
+        if arr[1] == "FLAGS":
+            raise SyntaxError(f"ERROR: Improper use of flag: line {count}")
+        if arr[1] in register:
+            out += register.get(arr[1])
+        else:
+            raise SyntaxError(f"ERROR: Invalid register: line {count}")
+        imm = arr[2]
+        if imm[0] == "$":
+            imm = int(imm[1 : len(imm)])
+            if imm in range(256):
+                imm_bin = str(bin(imm))
+                imm_bin = imm_bin[2 : len(imm_bin)]
+                if len(imm_bin) < 8:
+                    imm_bin = (8 - len(imm_bin)) * "0" + imm_bin
+                out += imm_bin
+            else:
+                raise SyntaxError(f"ERROR: Immediate out of bound: line {count}")
+        else:
+            raise SyntaxError(f"ERROR: Invalid Immediate Input: line {count}")
+        return out
+    else:
+        raise SyntaxError(f"ERROR: Invalid Arguments: line {count}")'''

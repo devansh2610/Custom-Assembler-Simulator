@@ -1,4 +1,5 @@
-do this to avoid ./run permission denied
+PLEASE DO THIS FIRST BEFORE RUNNING THE TEST CASES IN THE TERMINAL
+(this is to avoid ./run permission denied)
 
 open the Simple-Assembler folder in terminal and run chmod +x run 
 then open the automatedTesting folder in terminal and run chmod +x run

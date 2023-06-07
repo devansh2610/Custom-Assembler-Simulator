@@ -30,3 +30,5 @@ Finally, the code outputs the resulting binary instructions stored in the output
 
 The provided code essentially reads an assembly-like language and converts it into binary instructions. It performs error checking for valid instructions, registers, variables, and labels, and generates the corresponding binary code for each instruction. write this in para instead on points
 The code raises SyntaxError exceptions with specific error messages when it encounters invalid instructions, registers, variables, or labels. These exceptions provide concise information about the error, allowing the user to identify and address the problem accurately. The errors include unrecognized or unsupported instructions, invalid register names, invalid variable or label names, duplicate label definitions, and missing "hlt" instruction as the last instruction.
+
+The simulator.py implements a simulator.
